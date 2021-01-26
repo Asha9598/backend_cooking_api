@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/UserModel')
- const {check,validationResult}=require('express-validator');
- const brcyptjs=require('brcyptjs')
+const User = require('../models/user')
+ const {check,validationResult, body}=require('express-validator');
+ const bcryptjs=require('bcryptjs');
+ const userauth=require('../middleware/userauth')
+const user = require('../models/user');
 
 router.post('/user/insert',[
     check('Email',"Email is required!").not().isEmpty(),
@@ -21,7 +23,7 @@ router.post('/user/insert',[
     const Email = req.body.Email;
     const UserName = req.body.UserName;
     const Password = req.body.Password;
-    brcyptjs.hash(Password,10,function(err,hash){
+    bcryptjs.hash(Password,10,function(err,hash){
     const data2 = new User ({
         FirstName:FirstName,
         LastName:LastName,
@@ -29,13 +31,22 @@ router.post('/user/insert',[
         Email:Email,
         Password:hash
     })
-    data2.save();
+    data2.save()
+    .then(function(result){
+
+        res.status(201).json({message:"Registration of user success"});
+
+    })
+.catch(function(e){
+    res.status(500).json({message:e})
+}
+    )
     res.send("User Registered Sucessfully !!")
 
     })
 }
 else{
-        res.send(errors.array())
+        res.status(400).json(errors.array())
 
     }
 
@@ -47,4 +58,34 @@ else{
     
 
    
+})
+
+
+
+router.get('/user/login',function(req,res){
+    user.findOne({UserName:req.body.UserName})
+    .then(function(userdata){
+        if( userdata === null){
+            return res.status(401).json( {message:"Authentication fail"})
+
+
+
+                }
+                bcryptjs.compare(req.body.Password,function(err,result){
+                    if(err){
+                        return res.status(401).json({message:"Auth fail!"})
+                    }
+                    
+                    
+
+                })
+                
+            
+
+        })
+
+    .catch()
+    
+
+
 })
