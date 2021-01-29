@@ -3,15 +3,16 @@ const router = express.Router();
 const User = require('../models/user')
  const {check,validationResult, body}=require('express-validator');
  const bcryptjs=require('bcryptjs');
- const userauth=require('../middleware/userauth')
+  const userauth=require('../middleware/userauth')
 const user = require('../models/user');
+const jwt =require('jsonwebtoken')
 
 router.post('/user/insert',[
     check('Email',"Email is required!").not().isEmpty(),
-    check('Email',"It is not Valid Email!").isEmpty(),
-    check('FirstName',"First Name is required!").not().isEmpty(),
-    check('LastNmae',"Last Name is required!").not().isEmpty(),
-    check('UserName',"User Name is required!").not().isEmpty()
+    //check('Email',"It is not Valid Email!").isEmpty(),
+    // check('FirstName',"First Name is required!").not().isEmpty(),
+    // check('LastNmae',"Last Name is required!").not().isEmpty(),
+    // check('UserName',"User Name is required!").not().isEmpty()
 
 
 ],function(req,res){
@@ -48,16 +49,8 @@ router.post('/user/insert',[
 else{
         res.status(400).json(errors.array())
 
-    }
-
-
-
-
-
-    
-    
-
-   
+}  
+      
 })
 
 
@@ -70,22 +63,22 @@ router.get('/user/login',function(req,res){
 
 
 
+
                 }
                 bcryptjs.compare(req.body.Password,function(err,result){
-                    if(err){
+                    if(cresult===false){
                         return res.status(401).json({message:"Auth fail!"})
                     }
                     
+                   const token= jwt.sign({UserId:userdata._id},'secretkey');
+                   res.status(200).json({message:"Auth sucess!!",token:token})
                     
 
-                })
-                
-            
+                })     
 
         })
 
     .catch()
-    
-
-
 })
+
+module.exports = router
