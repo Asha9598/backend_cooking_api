@@ -1,41 +1,46 @@
-const { receiveMessageOnPort } = require("worker_threads");
+const express = require('express');
+const router = express.Router();
+const recipe = require('../models/recipeModel')
+const {check,validationResult, body}=require('express-validator');
+const userauth=require('../middleware/userauth')
 
 
+router.post('/recipe/insert',[
+    check('RecipeName',"RecipeName is required!").not().isEmpty(),
+],userauth.verifyUser,function(req,res){
+    const errors=validationResult(req);
+    if(errors.isEmpty())
+    {
+        const RecipeName = req.body. RecipeName;
+        const RecipeDescription = req.body.RecipeDescription;
+        const RecipeImage = req.body.RecipeImage;
+        const User = req.body.User;
+        const data2 = new recipe ({
+            RecipeName:RecipeName,
+            RecipeDescription:RecipeDescription,
+            RecipeImage : RecipeImage,
+            User:User
+        })
+        data2.save()
+        .then(function(result){
 
-
-
-
-
-
-
-
-
-router.delete('/recipe/delete/:id',function(req,res){
-    const rid = req.params.rid;
-    recipe.deleteOne({_id:rid})
-    .then(function(result){
-        res.status().json({message:"Recipe deleted!!"})
-
+            res.status(201).json({message:"Recipe Added Succesfully"});
+    
+        })
+    .catch(function(e){
+        res.status(500).json({message:e})
+    }
+        ) 
+    
+        } 
+    else{
+            res.status(400).json(errors.array())
+    
+    }  
+          
     })
-    .catch(function(err){
-        res.status(500).json({message:errr})
-
-    })
- 
-
-})
 
 
-//update
 
-router.put('/recipe/update/:id,',function(req,res){
-    const rname = req.body.rnmae;
-    const rid = req.body.rid;
-    recipe.updateOne({_id:rid},{_rname:rname})
-    .then(function(result){
-        res.status(200).json({message:"Updated"})
-    )} 
-    .catch(function(e)
 
-})
-})
+module.exports=router
