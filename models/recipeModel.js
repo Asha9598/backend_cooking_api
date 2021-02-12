@@ -17,3 +17,10 @@ const recipe = mongoose.model('recipe',{
         required:true
     }
 })
+
+module.exports = recipe;
+
+
+
+
+

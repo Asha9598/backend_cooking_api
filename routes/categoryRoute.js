@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const recipe = require('../models/category')
+const recipe = require('../models/categoryModel')
 const {check,validationResult, body}=require('express-validator');
 
 router.post('/category/insert',[
@@ -11,9 +11,7 @@ router.post('/category/insert',[
     {
         const  CategoryName = req.body. CategoryName;
          ({
-            CategoryName:CategoryName,
-            
-            
+            CategoryName:CategoryName,                       
         })
         data2.save()
         .then(function(result){
@@ -33,5 +31,5 @@ router.post('/category/insert',[
     }  
           
     })
-
+    module.exports=router
 
