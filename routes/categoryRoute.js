@@ -39,7 +39,7 @@ router.get("/category/fetch/:categoryID", (req, res, next) => {
             res.send({ success: true, category });
         })
         .catch(e => res.status(500).json({
-            message: "something went wrong. Unable to update category",
+            message: "something went wrong. Cannot  update category",
             success: false
         }));
 });
