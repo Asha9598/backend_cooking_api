@@ -46,6 +46,8 @@ router.get("/category/fetch/:categoryID", (req, res, next) => {
 
 
 
+
+
 router.put("/category/update/:categoryID", verifyAdmin, [
     check('name', "Updated category name is required!").not().isEmpty(),
 ], (req, res, next) => {
