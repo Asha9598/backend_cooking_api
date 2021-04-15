@@ -33,7 +33,7 @@ describe("Testing routes on category router", () => {
     });
 
     test("Should add new category", () => {
-        const newCategory = { name: " Category Unique" };
+        const newCategory = { name: "  Unique Category " };
         return Request.post("/category/insert")
             .set("authorization", adminToken)
             .send(newCategory)
