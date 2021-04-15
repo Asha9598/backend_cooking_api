@@ -33,7 +33,7 @@ describe("Testing routes on category router", () => {
     });
 
     test("Should add new category", () => {
-        const newCategory = { name: "Unique Category" };
+        const newCategory = { name: " Category Unique" };
         return Request.post("/category/insert")
             .set("authorization", adminToken)
             .send(newCategory)
@@ -64,6 +64,8 @@ describe("Testing routes on category router", () => {
                 expect(updateCategoryRes.body.message).toBe(expectedMessage);
             });
     });
+
+
 
 
     test("Shoud update category", () => {
