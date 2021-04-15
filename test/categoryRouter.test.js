@@ -67,7 +67,7 @@ describe("Testing routes on category router", () => {
 
 
     test("Shoud update category", () => {
-        const updatedCategory = { name: "Updated Category" };
+        const updatedCategory = { name: " Category is Updated" };
         return Request.put("/category/update/" + categoryID)
             .set("authorization", adminToken)
             .send(updatedCategory)
