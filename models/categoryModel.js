@@ -5,3 +5,5 @@ const category = mongoose.model('category',{
         required:true
     }
 })
+
+module.exports = category;

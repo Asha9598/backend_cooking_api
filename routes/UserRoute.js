@@ -35,14 +35,14 @@ router.post('/user/insert',[
     data2.save()
     .then(function(result){
 
-        res.status(201).json({message:"Registration of user success"});
+        res.status(201).json({success: true,message:"Registration of user success"});
 
     })
 .catch(function(e){
     res.status(500).json({message:e})
 }
     )
-    res.send("User Registered Sucessfully !!")
+    // res.send("User Registered Sucessfully !!")
 
     })
 }
@@ -59,15 +59,15 @@ router.post('/user/login',function(req,res){
     user.findOne({UserName:req.body.UserName})
     .then(function(userdata){
         if( userdata === null){
-            return res.status(401).json( {errormessage:"Authentication fail"})
+            return res.status(200).json( {errormessage:"Authentication fail"})
                 }
                 bcryptjs.compare(req.body.Password,userdata.Password,function(err,result){
                     if(result===false){
-                        return res.status(401).json({message:"Auth fail!"})
+                        return res.status(200).json({message:"Auth fail!"})
                     }
                     
                    const token= jwt.sign({UserId:userdata._id},'secretkey');
-                   res.status(200).json({message:"Auth sucess!!",token:token})
+                   res.status(200).json({message:"Auth sucess!!",token:token,userType:'Customer'})
                     
 
                 })     
