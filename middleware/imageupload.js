@@ -1,44 +1,27 @@
-const Multer = require("Multer");
-const userStorage = Multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "public/uploads/users");
+const multer = require('multer');
+const path = require('path');
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './public/uploads');
     },
-    filename: (req, file, cb) => {
-        const fileName = file.fieldname + "_" + Date.now() + "_" + file.originalname;
-        cb(null, fileName);
+    filename: (req, file, callback) => {
+        let ext = path.extname(file.originalname);
+        // callback(null, file.fieldname + '-' + Date.now() + '-' + ext);
+        callback(null,file.originalname);
     }
 });
 
-const recipeStorage = Multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "public/uploads/recipes");
-    },
-    filename: (req, file, cb) => {
-        const fileName = file.fieldname + "_" + Date.now() + "_" + file.originalname;
-        cb(null, fileName);
+
+const filterImage = (req, file, callback) => {
+    const filter = file.originalname.match(/\.(jpg|jpeg|png|gif)$/);
+    if (!filter) {
+        callback(new Error("Please Upload Image", 400), false);
     }
-});
+    callback(null, true);
+}
 
-const fileFilter = (req, file, cb) => {
-    if (!file.originalname.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)) {
-        let error = new Error("Only JPG, JPEG and PNG format files are supported.");
-        error.statusCode = 400;
-        cb(error, false);
-    } else {
-        cb(null, true);
-    }
-};
+const upload = multer({storage: storage});
 
-const limits = {
-    fileSize: 1024 * 1024 * 2
-};
-
-const userImageUpload = Multer({
-    storage: userStorage, fileFilter, limits
-});
-
-const recipeImageUpload = Multer({
-    storage: recipeStorage, fileFilter, limits
-});
-
-module.exports = { userImageUpload, recipeImageUpload };
+module.exports = upload;

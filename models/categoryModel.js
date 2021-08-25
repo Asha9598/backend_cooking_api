@@ -1,9 +1,9 @@
 const mongoose = require("mongoose")
-const category = mongoose.model('category',{ 
-    CategoryName:{
+const Category = mongoose.model('Category',{ 
+    categoryName:{
         type: String,
         required:true
     }
 })
 
-module.exports = category;
+module.exports = Category;

@@ -1,24 +1,37 @@
 const mongoose = require("mongoose")
-const recipe = mongoose.model('recipe',{ 
-       RecipeName:{
+const Recipe = mongoose.model('Recipe',{ 
+       recipeName:{
         type: String,
         required:true
     },
-    RecipeDescription:{
+    recipeDescription:{
         type: String,
         required:true
     },
-    RecipeImage:{
-        type: String,
-        required:true
+    photo:{
+        type: String
     },
-    User:{
+    category:
+        {
         type: String,
-        required:true
+   },
+  addedBy: {
+            type:String,
+    },
+    isFav:{
+        type:Boolean,
+        default:false
+    },
+    favBy:{
+        type:String,
+    },
+    createdAt:{
+        type:Date,
+        default:Date.now()
     }
 })
 
-module.exports = recipe;
+module.exports = Recipe;
 
 
 
